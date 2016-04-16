@@ -4,6 +4,14 @@ import re
 from bs4 import BeautifulSoup
 
 
+def format_title(title):
+    title = title.replace('\n', '')
+    title = re.sub(r'\[.*?\]', '', title)
+    title = re.sub(r'\**', '', title)
+    title = title.strip()
+    return title
+
+
 class GSC_Scraper(object):
     def __init__(self, url):
         '''
@@ -13,7 +21,14 @@ class GSC_Scraper(object):
         '''
         self.url = url
         # Gets the initial page
-        page = requests.get(self.url)
+        try:
+            page = requests.get(self.url)
+        except requests.ConnectionError:
+            print('[!] Unable to connect to {}'.format(url))
+            raise
+        except requests.HTTPError:
+            print('[!] Web page error!')
+
         # You can change the parser used here
         self.page_tree = BeautifulSoup(page.content, 'lxml')
 
@@ -24,14 +39,12 @@ class GSC_Scraper(object):
         timeout = 0
 
         # The loop to simulate the "Load more" button click
-        while not len(self.get_titles()) == total:
+        while not self.get_titles() == total:
             if timeout >= 20:
                 print('[!] Unable to scrape all titles, continuing anyways')
                 break
             self.load_more()
             timeout += 1
-        # Got em titles
-        self.titles = self.get_titles()
 
     def get_titles(self):
         '''
@@ -44,7 +57,8 @@ class GSC_Scraper(object):
         # Adds them to the list
         for section in sections:
             titles.append(section.text)
-        return titles
+        self.titles = titles
+        return len(titles)
 
     def get_total(self):
         '''
@@ -70,5 +84,29 @@ class GSC_Scraper(object):
         for param in params:
             payload[param.get('name')] = param.get('value')
         # Performs the post request and updates the page
-        page = requests.post(self.url, data=payload)
+        try:
+            page = requests.post(self.url, data=payload)
+        except requests.ConnectionError:
+            print('[!] Unable to connect to {}'.format(url))
+            raise
+        except requests.HTTPError:
+            print('[!] Web page error!')
         self.page_tree = BeautifulSoup(page.content, 'lxml')
+
+
+class TGV_Scraper(object):
+    '''
+    TODO
+    Implement into main script
+    '''
+    def __init__(self, url):
+        self.url = url
+        page = requests.get(url)
+        self.page_tree = BeautifulSoup(page.content, 'lxml')
+
+    def get_titles(self):
+        titles = []
+        sections = self.page_tree.find_all('article', {'class': 'moviePosterItem'})
+        for section in sections:
+            titles.append(format_title(section.text))
+        print(titles)
