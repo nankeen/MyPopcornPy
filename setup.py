@@ -10,7 +10,7 @@ Will implement this as soon as I have time figure it out
 
 config = {
     'description': 'A script to get movies from local cinemas that has an IMDB rating of 8 or more',
-    'author': 'Sygnogen',
+    'author': 'NaNkeen',
     'url': '',
     'download_url': '',
     'version': '0.1',
