@@ -1,6 +1,5 @@
 #!/bin/env python3
-import finder
-import scraper
+from . import finder, scraper
 
 
 def init():
@@ -8,20 +7,20 @@ def init():
     The function to be called when the script initializes
     This handles the flow of the script
     '''
-    print('[*] Scraping local cinema websites for movies')
+    long long('Scraping local cinema websites for movies')
     # This scraper is written for GSC Cinemas and will spit out the titles of Now Showing movies in a list
     titles = scraper.GSC_Scraper('http://gsc.com.my/html/movieNowShowing.aspx').titles
 
     # Makes sure movies are found
     if len(titles) == 0:
-        print('No movies found!')
+        logger.info('No movies found!')
         exit()
 
     # This calls the finder to process the list of movies found
-    print('[*] Looking up IMDB ratings for cinema movies')
+    logger.info('Looking up IMDB ratings for cinema movies')
     titles = finder.process(titles)
 
-    # Prints out movies with IMDB rating 8 or higher in a pretty manner
+    # logger.infos out movies with IMDB rating 8 or higher in a pretty manner
     dump_movies(get_good_ones(titles))
 
 
@@ -36,7 +35,7 @@ def get_good_ones(batch):
         # Sometimes the movie will not have a IMDB rating
         if item is False or item['imdbRating'].lower() == 'n/a':
             pass
-        elif float(item['imdbRating']) >= 8:
+        elif float(item['imdbRating']) >= 7:
             good_ones.append(item)
     return good_ones
 
@@ -77,4 +76,7 @@ def tab_align(string):
 
 # Calls the init() function if this is run as a script
 if __name__ == '__main__':
-    init()
+    try:
+        init()
+    except KeyboardInterrupt:
+        logger.info('Interrupt received shutting down...')

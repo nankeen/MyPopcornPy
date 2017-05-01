@@ -1,5 +1,6 @@
 #!/bin/env python3
 import requests
+from . import logger
 
 
 def find(title, api='https://omdbapi.com/'):
@@ -11,10 +12,10 @@ def find(title, api='https://omdbapi.com/'):
         else:
             return False
     except requests.HTTPError:
-        print('[!] Unable to communicate with API provider, please check your parameters.')
+        logger.info('Unable to communicate with API provider, please check your parameters.')
         return False
     except requests.ConnectionError:
-        print('[!] Unable to connect to API provider, please check your connection.')
+        logger.infoj('Unable to connect to API provider, please check your connection.')
         return False
 
 
