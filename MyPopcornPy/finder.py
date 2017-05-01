@@ -12,10 +12,10 @@ def find(title, api='https://omdbapi.com/'):
         else:
             return False
     except requests.HTTPError:
-        logger.info('Unable to communicate with API provider, please check your parameters.')
+        logger.error('Unable to communicate with API provider, please check your parameters.')
         return False
     except requests.ConnectionError:
-        logger.infoj('Unable to connect to API provider, please check your connection.')
+        logger.error('Unable to connect to API provider, please check your connection.')
         return False
 
 

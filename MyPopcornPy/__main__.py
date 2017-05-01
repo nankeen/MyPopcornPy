@@ -1,5 +1,5 @@
 #!/bin/env python3
-from . import finder, scraper
+from . import finder, scraper, logger
 
 
 def init():
@@ -7,7 +7,7 @@ def init():
     The function to be called when the script initializes
     This handles the flow of the script
     '''
-    long long('Scraping local cinema websites for movies')
+    logger.info('Scraping local cinema websites for movies')
     # This scraper is written for GSC Cinemas and will spit out the titles of Now Showing movies in a list
     titles = scraper.GSC_Scraper('http://gsc.com.my/html/movieNowShowing.aspx').titles
 

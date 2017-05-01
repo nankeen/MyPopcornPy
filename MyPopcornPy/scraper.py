@@ -2,6 +2,7 @@
 import requests
 import re
 from bs4 import BeautifulSoup
+from . import logger
 
 
 def format_title(title):
@@ -24,10 +25,10 @@ class GSC_Scraper(object):
         try:
             page = requests.get(self.url)
         except requests.ConnectionError:
-            print('[!] Unable to connect to {}'.format(url))
+            logger.error('Unable to connect to {}'.format(url))
             raise
         except requests.HTTPError:
-            print('[!] Web page error!')
+            logger.error('Web page error!')
 
         # You can change the parser used here
         self.page_tree = BeautifulSoup(page.content, 'lxml')
@@ -41,7 +42,7 @@ class GSC_Scraper(object):
         # The loop to simulate the "Load more" button click
         while not self.get_titles() == total:
             if timeout >= 20:
-                print('[!] Unable to scrape all titles, continuing anyways')
+                logger.warning('Unable to scrape all titles, continuing anyways')
                 break
             self.load_more()
             timeout += 1
@@ -87,10 +88,10 @@ class GSC_Scraper(object):
         try:
             page = requests.post(self.url, data=payload)
         except requests.ConnectionError:
-            print('[!] Unable to connect to {}'.format(url))
+            logger.error('Unable to connect to {}'.format(url))
             raise
         except requests.HTTPError:
-            print('[!] Web page error!')
+            logger.error('Web page error!')
         self.page_tree = BeautifulSoup(page.content, 'lxml')
 
 
