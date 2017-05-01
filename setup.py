@@ -1,23 +1,25 @@
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+from setuptools import setup, find_packages
+import sys
+import os
 
-'''
-This setup script does nothing for now as I have no idea how to work this lol
-Will implement this as soon as I have time figure it out
-'''
+version = '1.1'
 
-config = {
-    'description': 'A script to get movies from local cinemas that has an IMDB rating of 8 or more',
-    'author': 'NaNkeen',
-    'url': '',
-    'download_url': '',
-    'version': '0.1',
-    'install_requires': ['bs4', 'requests'],
-    'packages': ['MyPopcornPy']
-    'scripts': ['__main__', 'finder', 'scraper'],
-    'name': ''
-}
-
-setup(**config)
+setup(name='MyPopcornPy',
+      version=version,
+      description="A script to get movies from local cinemas",
+      # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
+      classifiers=[],
+      keywords='',
+      author='NaNkeen',
+      url='',
+      license='GPL-3.0+',
+      packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
+      include_package_data=True,
+      zip_safe=False,
+      install_requires=[
+          # -*- Extra requirements: -*-
+      ],
+      entry_points="""
+      # -*- Entry points: -*-
+      """,
+      )
