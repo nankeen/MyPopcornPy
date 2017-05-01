@@ -4,7 +4,7 @@ A script to extract good movies from [GSC](http://gsc.com.my)'s Now Showing list
 
 1. Clone this repo
 2. Install the dependencies in requirements.txt
-3. In the root folder run `python ./MyPopcornPy`
+3. In the root folder run `python -m mypopcorn`
 
 ##Features and future developments
 * Shows movie information from the omdb API, title, ratings, plot
